@@ -6,7 +6,7 @@
 ## Tecnologias Utilizadas
 - Spring Boot: Framework para desenvolvimento de aplicações Java.
 - Spring Data JPA: Para manipulação de dados com um repositório baseado em JPA.
-- Spring Validation: Para validação das entradas de dados nos endpoints
+- Spring Validation: Para validação das entradas de dados nos endpoints.
 - Spring Web: Para criar a API RESTful.
 - Postgresql
 
@@ -23,11 +23,11 @@
 3. Configure o banco de dados no arquivo application.properties
 
 # Configuração do banco de dados
-spring.datasource.url=jdbc:postgresql://localhost:5432/meu-banco
-spring.datasource.username=postgres
-spring.datasource.password=123
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+- spring.datasource.url=jdbc:postgresql://localhost:5432/meu-banco
+- spring.datasource.username=postgres
+- spring.datasource.password=123
+- spring.jpa.hibernate.ddl-auto=update
+- spring.jpa.show-sql=true
  
 ## iniciar a aplicação
 - Compile e inicie a aplicação: mvn spring-boot:run
