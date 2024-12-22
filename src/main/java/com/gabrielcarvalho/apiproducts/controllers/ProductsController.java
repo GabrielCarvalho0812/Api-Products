@@ -1,75 +1,57 @@
 package com.gabrielcarvalho.apiproducts.controllers;
 
 import com.gabrielcarvalho.apiproducts.dto.ProductsRecordDto;
-import com.gabrielcarvalho.apiproducts.models.ProductsModel;
-import com.gabrielcarvalho.apiproducts.repositories.ProductsRepository;
+;
+import com.gabrielcarvalho.apiproducts.services.ProductsService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/products")
 public class ProductsController {
 
-    ProductsRepository productsRepository;
+    private final ProductsService productsService;
 
-    public ProductsController(ProductsRepository productsRepository) {
-        this.productsRepository = productsRepository;
+    public ProductsController(ProductsService productsService) {
+        this.productsService = productsService;
     }
-
 
     @PostMapping("/products")
-    public ResponseEntity<ProductsModel> saveProduct(@RequestBody @Valid ProductsRecordDto productsRecordDto){
-        var productsModel = new ProductsModel();
-        BeanUtils.copyProperties(productsRecordDto,productsModel);//fazer a cpnversão de DTO para Model
-        // fazer tratamento de exeção para o nome
-        return ResponseEntity.status(HttpStatus.CREATED).body(productsRepository.save(productsModel));
+    public ResponseEntity<?> saveProduct(@RequestBody@ Valid ProductsRecordDto productsRecordDto) {
+        return productsService.saveProduct(productsRecordDto);
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<List<ProductsModel>> getallProducts(){
-        return  ResponseEntity.status(HttpStatus.OK).body(productsRepository.findAll());
+    @GetMapping
+    public ResponseEntity<?> getAllProducts() {
+        return productsService.getAllProducts();
     }
 
-
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Object> getOneProduct(@PathVariable(value = "id") UUID id){
-        Optional<ProductsModel> product0 = productsRepository.findById(id);
-
-        if (product0.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("product not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(product0.get());
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOneProduct(@PathVariable(value = "id") UUID id) {
+        return productsService.getOneProduct(id);
     }
 
-    @PutMapping("/products/{id}")
-    public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id,
-                                                @RequestBody @Valid ProductsRecordDto productRecordDto){
-        Optional<ProductsModel> product0 = productsRepository.findById(id);
-
-        if (product0.isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-        var productModel = product0.get();
-        BeanUtils.copyProperties(productRecordDto, productModel);
-        return ResponseEntity.status(HttpStatus.OK).body(productsRepository.save(productModel));
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable(value = "id") UUID id,
+                                           @RequestBody @Valid ProductsRecordDto productRecordDto) {
+        return productsService.updateProduct(id, productRecordDto);
     }
 
-
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable (value = "id") UUID id){
-        Optional<ProductsModel> produtc0 = productsRepository.findById(id);
-        if (produtc0.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-        productsRepository.delete(produtc0.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Product delete successfully");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") UUID id) {
+        return productsService.deleteProduct(id);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getProductsByName(@RequestParam String name) {
+        return productsService.getProductsByName(name);
+    }
+
 
 }
 
