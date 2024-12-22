@@ -23,7 +23,7 @@ public class ProductsService {
 
     public ResponseEntity<ProductsModel> saveProduct(ProductsRecordDto productsRecordDto) {
         var productsModel = new ProductsModel();
-        BeanUtils.copyProperties(productsRecordDto, productsModel); // Conversão de DTO para Model
+        BeanUtils.copyProperties(productsRecordDto, productsModel);// Conversão de DTO para Model
         return ResponseEntity.status(HttpStatus.CREATED).body(productsRepository.save(productsModel));
     }
 
@@ -63,7 +63,9 @@ public class ProductsService {
         return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
     }
 
-    public ResponseEntity<List<ProductsModel>> getProductsByName(String name) {
+
+
+    public ResponseEntity<Object> getProductsByName(String name) {
         List<ProductsModel> products = productsRepository.findByName(name);
 
         if (products.isEmpty()) {
