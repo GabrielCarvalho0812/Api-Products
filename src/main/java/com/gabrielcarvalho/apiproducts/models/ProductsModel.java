@@ -1,5 +1,6 @@
 package com.gabrielcarvalho.apiproducts.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class ProductsModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore //para evitar que o id seja exposto
     private UUID idProduct;
 
     @Column(nullable = false, unique = true)
@@ -26,9 +28,6 @@ public class ProductsModel implements Serializable {
         return idProduct;
     }
 
-    public void setIdProduct(UUID idProduct) {
-        this.idProduct = idProduct;
-    }
 
     public String getName() {
         return name;

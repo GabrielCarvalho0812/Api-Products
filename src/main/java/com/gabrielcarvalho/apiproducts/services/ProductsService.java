@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,33 +46,30 @@ public class ProductsService {
         Optional<ProductsModel> product = productsRepository.findById(id);
 
         if (product.isPresent()) {
+            ProductsModel productsModel = product.get();
+
+            productsModel.setName(productRecordDto.name());
+            productsModel.setValue(productRecordDto.value());
+            productsRepository.save(productsModel);
+            System.out.println("Product updated successfully.");
+            return ResponseEntity.status(HttpStatus.OK).body(productsRepository.save(productsModel));
+
+        }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
-        var productModel = product.get();
-        BeanUtils.copyProperties(productRecordDto, productModel);
-        return ResponseEntity.status(HttpStatus.OK).body(productsRepository.save(productModel));
-
     }
+
 
     public ResponseEntity<Object> deleteProduct(UUID id) {
         Optional<ProductsModel> product = productsRepository.findById(id);
 
-        if (product.isEmpty()) {
+        if (product.isPresent()) {
+            productsRepository.delete(product.get());
+            return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
+        }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
-        productsRepository.delete(product.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
+
     }
 
-
-
-    public ResponseEntity<Object> getProductsByName(String name) {
-        List<ProductsModel> products = productsRepository.findByName(name);
-
-        if (products.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(products);
-    }
 }

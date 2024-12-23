@@ -41,19 +41,13 @@ public class ProductsController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id,
                                                 @RequestBody @Valid ProductsRecordDto productRecordDto) {
-        return productsService.updateProduct(id, productRecordDto);
+        return ResponseEntity.ok().body(productsService.updateProduct(id, productRecordDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id) {
         return productsService.deleteProduct(id);
     }
-
-    @GetMapping("/search")
-    public ResponseEntity<Object> getProductsByName(@RequestParam String name) {
-        return productsService.getProductsByName(name);
-    }
-
 
 }
 

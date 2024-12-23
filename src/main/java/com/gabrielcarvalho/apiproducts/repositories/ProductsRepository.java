@@ -12,7 +12,4 @@ import java.util.UUID;
 @Repository
 public interface ProductsRepository extends JpaRepository<ProductsModel, UUID>{
 
-    List<ProductsModel> findByName(String name);
-
-
 }
