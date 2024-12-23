@@ -72,7 +72,7 @@ public class ProductsServiceTeste {
     }
 
 
-    // Testa quando o produto é encontrado
+    // TESTA QUANOD O PRODUTO é ENCONTRADO
     @Test
     public void deveRetornarOneProduct(){
 
@@ -89,6 +89,8 @@ public class ProductsServiceTeste {
         assertEquals(product, response.getBody());
     }
 
+
+    //TESTA QUANDO O PRODUTO NAO é ENCONTRADO
     @Test
     public void deveRetornarNotFound() {
 
@@ -105,7 +107,6 @@ public class ProductsServiceTeste {
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Product not found.", response.getBody());
-
 
     }
 
