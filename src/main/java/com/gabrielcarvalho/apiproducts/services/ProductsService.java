@@ -4,11 +4,12 @@ import com.gabrielcarvalho.apiproducts.dto.ProductsRecordDto;
 import com.gabrielcarvalho.apiproducts.models.ProductsModel;
 import com.gabrielcarvalho.apiproducts.repositories.ProductsRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +19,8 @@ public class ProductsService {
 
     private final ProductsRepository productsRepository;
 
+
+    @Autowired
     public ProductsService(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
@@ -25,6 +28,7 @@ public class ProductsService {
     public ResponseEntity<ProductsModel> saveProduct(ProductsRecordDto productsRecordDto) {
         var productsModel = new ProductsModel();
         BeanUtils.copyProperties(productsRecordDto, productsModel);// Conversão de DTO para Model
+        ProductsModel savedProduct = productsRepository.save(productsModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(productsRepository.save(productsModel));
     }
 

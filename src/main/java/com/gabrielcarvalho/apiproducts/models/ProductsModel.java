@@ -28,7 +28,6 @@ public class ProductsModel implements Serializable {
         return idProduct;
     }
 
-
     public String getName() {
         return name;
     }
