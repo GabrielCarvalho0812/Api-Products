@@ -14,7 +14,6 @@ public class ProductsModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore //para evitar que o id seja exposto
     private UUID idProduct;
 
     @Column(nullable = false, unique = true)
