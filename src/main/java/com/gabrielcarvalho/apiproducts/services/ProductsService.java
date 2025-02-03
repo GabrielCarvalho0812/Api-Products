@@ -4,6 +4,7 @@ import com.gabrielcarvalho.apiproducts.dto.ProductsRecordDto;
 import com.gabrielcarvalho.apiproducts.exceptions.NotFoudExeption;
 import com.gabrielcarvalho.apiproducts.models.ProductsModel;
 import com.gabrielcarvalho.apiproducts.repositories.ProductsRepository;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,9 @@ public class ProductsService {
 
     public void deleteProduct(ProductsModel productsModel) {
         productsRepository.delete(productsModel);
+    }
+
+    public boolean existsByName(String name) {
+        return productsRepository.existsByName(name);
     }
 }

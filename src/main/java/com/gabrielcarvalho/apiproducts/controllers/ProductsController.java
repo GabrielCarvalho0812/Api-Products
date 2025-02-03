@@ -27,7 +27,10 @@ public class ProductsController{
     }
 
     @PostMapping
-    public ResponseEntity<ProductsModel> saveProduct(@RequestBody @Valid ProductsRecordDto productsRecordDto){
+    public ResponseEntity<Object> saveProduct(@RequestBody @Valid ProductsRecordDto productsRecordDto){
+        if (productsService.existsByName(productsRecordDto.name())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product name already exists");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(productsService.saveProduct(productsRecordDto));
     }
 
@@ -44,7 +47,9 @@ public class ProductsController{
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id,
                                                 @RequestBody @Valid ProductsRecordDto productRecordDto) {
-
+        if (productsService.existsByName(productRecordDto.name())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product name already exists");
+        }
         return ResponseEntity.status(HttpStatus.OK).body
                 (productsService.updateProduct(productRecordDto, productsService.getOneProduct(id).get()));
     }
