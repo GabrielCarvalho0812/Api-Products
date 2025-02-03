@@ -1,14 +1,11 @@
 package com.gabrielcarvalho.apiproducts.services;
 
 import com.gabrielcarvalho.apiproducts.dto.ProductsRecordDto;
+import com.gabrielcarvalho.apiproducts.exceptions.NotFoudExeption;
 import com.gabrielcarvalho.apiproducts.models.ProductsModel;
 import com.gabrielcarvalho.apiproducts.repositories.ProductsRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -19,61 +16,37 @@ public class ProductsService {
 
     private final ProductsRepository productsRepository;
 
-
-    @Autowired
     public ProductsService(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
 
-    public ResponseEntity<ProductsModel> saveProduct(ProductsRecordDto productsRecordDto) {
+    public ProductsModel saveProduct(ProductsRecordDto productsRecordDto) {
         var productsModel = new ProductsModel();
         BeanUtils.copyProperties(productsRecordDto, productsModel);// Conversão de DTO para Model
-        ProductsModel savedProduct = productsRepository.save(productsModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productsRepository.save(productsModel));
+        return productsRepository.save(productsModel);
     }
 
-    public ResponseEntity<List<ProductsModel>> getAllProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(productsRepository.findAll());
+
+    public List<ProductsModel> getAllProducts() {
+        return productsRepository.findAll();
     }
 
-    public ResponseEntity<Object> getOneProduct(UUID id) {
-        Optional<ProductsModel> product = productsRepository.findById(id);
 
-      if (productsRepository.existsById(id)){
-          return ResponseEntity.status(HttpStatus.OK).body(product.get());
+    public Optional<ProductsModel> getOneProduct(UUID id) {
+        Optional<ProductsModel> productsModelOptional = productsRepository.findById(id);
+      if (productsModelOptional.isEmpty()){
+          throw new NotFoudExeption("Products Not Found");
       }
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-
-    }
-
-    public ResponseEntity<Object> updateProduct(UUID id, ProductsRecordDto productRecordDto) {
-        Optional<ProductsModel> product = productsRepository.findById(id);
-
-        if (product.isPresent()) {
-            ProductsModel productsModel = product.get();
-
-            productsModel.setName(productRecordDto.name());
-            productsModel.setValue(productRecordDto.value());
-            productsRepository.save(productsModel);
-            System.out.println("Product updated successfully.");
-            return ResponseEntity.status(HttpStatus.OK).body(productsRepository.save(productsModel));
-
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
+        return productsModelOptional;
     }
 
 
-    public ResponseEntity<Object> deleteProduct(UUID id) {
-        Optional<ProductsModel> product = productsRepository.findById(id);
-
-        if (product.isPresent()) {
-            productsRepository.delete(product.get());
-            return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-
+    public ProductsModel updateProduct( ProductsRecordDto productRecordDto, ProductsModel productsModel) {
+        BeanUtils.copyProperties(productRecordDto, productsModel);
+        return productsRepository.save(productsModel);
     }
 
+    public void deleteProduct(ProductsModel productsModel) {
+        productsRepository.delete(productsModel);
+    }
 }

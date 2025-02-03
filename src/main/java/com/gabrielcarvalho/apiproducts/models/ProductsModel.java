@@ -1,6 +1,5 @@
 package com.gabrielcarvalho.apiproducts.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
