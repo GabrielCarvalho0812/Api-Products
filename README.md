@@ -4,6 +4,7 @@
 - sobre os produtos de um sistema de inventário.
 
 ## Tecnologias Utilizadas
+- Java 17:
 - Spring Boot: Framework para desenvolvimento de aplicações Java.
 - Spring Data JPA: Para manipulação de dados com um repositório baseado em JPA.
 - Spring Validation: Para validação das entradas de dados nos endpoints.
