@@ -1,8 +1,9 @@
-package com.gabrielcarvalho.apiproducts.services;
+package com.gabrielcarvalho.apiproducts.unit.services;
 
 import com.gabrielcarvalho.apiproducts.exceptions.NotFoudExeption;
 import com.gabrielcarvalho.apiproducts.models.ProductsModel;
 import com.gabrielcarvalho.apiproducts.repositories.ProductsRepository;
+import com.gabrielcarvalho.apiproducts.services.ProductsService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
